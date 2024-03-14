@@ -20,11 +20,11 @@ runs:
       id: random
     - shell: bash
       if: ${{ inputs.profile-file != null }}
-      run: cp ${{ inputs.profile-file }} $RUNNER_TEMP/${{ steps.random.outputs.STRING }}.mobileprovision
+      run: cp ${{ inputs.profile-file }} $RUNNER_TEMP/${{ steps.random.outputs.STRING }}.provisionprofile
     - shell: bash
       if: ${{ inputs.profile-base64 != null }}
-      run: echo -n ${{ inputs.profile-base64 }} | base64 --decode -o $RUNNER_TEMP/${{ steps.random.outputs.STRING }}.mobileprovision
+      run: echo -n ${{ inputs.profile-base64 }} | base64 --decode -o $RUNNER_TEMP/${{ steps.random.outputs.STRING }}.provisionprofile
     - shell: bash
       run: |
         mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-        cp $RUNNER_TEMP/${{ steps.random.outputs.STRING }}.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles
+        cp $RUNNER_TEMP/${{ steps.random.outputs.STRING }}.provisionprofile ~/Library/MobileDevice/Provisioning\ Profiles
