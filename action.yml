@@ -15,7 +15,7 @@ runs:
   using: "composite"
   steps:
     - shell: bash
-      run: STRING=$(LC_CTYPE=C tr -d -c '[:alnum:]' </dev/urandom | head -c 15)
+      run: STRING=$(cat /dev/urandom | LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1)
       id: random
     - shell: bash
       if: ${{ inputs.profile-file != null }}
