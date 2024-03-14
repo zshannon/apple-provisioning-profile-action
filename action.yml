@@ -15,12 +15,15 @@ runs:
   using: "composite"
   steps:
     - shell: bash
+      run: STRING=$(LC_CTYPE=C tr -d -c '[:alnum:]' </dev/urandom | head -c 15)
+      id: random
+    - shell: bash
       if: ${{ inputs.profile-file != null }}
-      run: cp ${{ inputs.profile-file }} $RUNNER_TEMP/profile.mobileprovision
+      run: cp ${{ inputs.profile-file }} $RUNNER_TEMP/${{ steps.random.outputs.STRING }}.mobileprovision
     - shell: bash
       if: ${{ inputs.profile-base64 != null }}
-      run: echo -n ${{ inputs.profile-base64 }} | base64 --decode -o $RUNNER_TEMP/profile.mobileprovision
+      run: echo -n ${{ inputs.profile-base64 }} | base64 --decode -o $RUNNER_TEMP/${{ steps.random.outputs.STRING }}.mobileprovision
     - shell: bash
       run: |
         mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-        cp $RUNNER_TEMP/profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles
+        cp $RUNNER_TEMP/${{ steps.random.outputs.STRING }}.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles
